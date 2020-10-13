@@ -1,0 +1,19 @@
+{
+  "name": "pemilo-admin",
+  "version": "1.0.0",
+  "description": "Pemilo Admin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mindpulation/pemilo-admin.git"
+  },
+  "author": "Mindpulation",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mindpulation/pemilo-admin/issues"
+  },
+  "homepage": "https://github.com/Mindpulation/pemilo-admin#readme"
+}
