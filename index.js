@@ -11,7 +11,7 @@ const app = express();
 app.use(bp.urlencoded({ extended: false }));
 app.use(bp.json());
 app.use(cors());
-app.use('/v1/student', admin);
+app.use('/v1/admin', admin);
 app.use('/', server);
 
 app.listen(config.get('ports'), (err) => {
