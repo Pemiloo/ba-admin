@@ -1,8 +1,6 @@
-// const joi = require('joi');
-const { signup } = require('../../modules/admin/repositories/commands/command_model')
+const joi = require('joi');
 const validate = require('validate.js');
 const wrapper = require('../../helpers/utils/wrapper');
-const joi = require('joi')
 
 const isValidPayload = (payload, models) => {
     const { value, error } = joi.validate(payload, models);
