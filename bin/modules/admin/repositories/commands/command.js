@@ -111,7 +111,7 @@ const updateData = async (payloadData) => {
             }
         }
 
-        if(await request.sendRequest('POST', config.get('roomEndpoint'), config.get('roomUpdatePath'), null, null, roomPayload)) {
+        if(await request.sendRequest('PUT', config.get('roomEndpoint'), config.get('roomUpdatePath'), null, null, roomPayload)) {
             const dbResult = await set(con, {"email": payloadData.data.findEmail}, payloads(payloadData));
             if (!dbResult) {
                 result.err = true,
