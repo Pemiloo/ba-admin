@@ -5,7 +5,7 @@ const { save } = require('mongooo').Save;
 const { del } = require('mongooo').Delete;
 const { find, findOne } = require('mongooo').Find;
 const { set } = require('mongooo').Update;
-const {uuid : uuidv4} =  require('uuid');
+const uuidv4 =  require('uuid').v4;
 
 const mongo = new Mongo();
 
