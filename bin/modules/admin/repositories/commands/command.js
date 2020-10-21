@@ -52,7 +52,7 @@ const insertData = async (payloadData) => {
 
         }
     }catch (e) {
-        const tickets = uuidv4;
+        const tickets = uuidv4();
         result.err = true,
         result.message = "Something went wrong"
         result.ticketId = tickets
@@ -78,7 +78,7 @@ const compareData = async (payloadData) => {
             result.message = "Success to login"
         }
     }catch (e) {
-        const tickets = uuidv4;
+        const tickets = uuidv4();
         result.err = false,
         result.message = "Something went wrong"
         result.ticketId = tickets
@@ -126,7 +126,7 @@ const updateData = async (payloadData) => {
         }
 
     }catch (e) {
-        const tickets = uuidv4;
+        const tickets = uuidv4();
         result.status = false,
         result.result = "Something went wrong"
         result.ticketId = tickets
@@ -176,7 +176,7 @@ const findData = async (payloadData) => {
                 result.message = dbResult;
         }
     }catch (e) {
-        const tickets = uuidv4;
+        const tickets = uuidv4();
         result.err = true,
             result.message = "Something went wrong"
         result.ticketId = tickets
