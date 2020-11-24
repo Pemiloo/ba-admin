@@ -8,9 +8,9 @@ const login = joi.object({
 const signup = joi.object({
     email: joi.string().email({tlds: {allow: true}}).required(),
     password: joi.string().required(),
-    linkPhoto: joi.string().required(),
+    linkPhoto: joi.string().optional(),
     title : joi.string().required(),
-    namaPanitia : joi.array().required()
+    namaPanitia : joi.array().optional()
 });
 
 const update = joi.object({
