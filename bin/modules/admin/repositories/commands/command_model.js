@@ -9,7 +9,7 @@ const signup = joi.object({
     email: joi.string().email({tlds: {allow: true}}).required(),
     password: joi.string().required(),
     linkPhoto: joi.string().optional(),
-    title : joi.string().required(),
+    title : joi.string().optional(),
     namaPanitia : joi.array().optional()
 });
 
