@@ -4,7 +4,7 @@
   "description": "Pemilo Admin",
   "main": "index.js",
   "scripts": {
-    "dev" : "node index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Pemiloo/ba-admin#readme",
   "dependencies": {
-  
+    "fast-json-stringify": "^2.4.1",
+    "find-my-way": "^3.0.5"
   }
 }
