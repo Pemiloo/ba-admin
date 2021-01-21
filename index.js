@@ -1,45 +1,44 @@
+'use strict'
+
 const url = require('url');
 const http = require('http');
 const qs = require('querystring');
 const router = require('find-my-way')();
 
-let stringFormat = require('fast-json-stringify')({
-  title: 'Example Schema',
+const JSON = require('fast-json-stringify');
+
+const stringFormat = JSON({
   type: 'object',
   properties : {
-    message : {type : 'string'}
+    msg : {type : 'string'}
   }
 });
 
-
-router.on('POST', '/', async (req, res)=>{
-
-  const URL =  qs.parse(url.parse(req.url.toString()).query);
-
-  console.log(URL);
-
-  const getBod = (event) => {
-    return new Promise((resolve, reject) => {
-      req.on(event, (tmp)=>{
-        const str = JSON.parse(Buffer.from(tmp).toString('utf8'));
-        resolve(str);
-      });
-    });
-  } 
-
-  const getData = await getBod("data");
-
-  console.log(getData);
+router.on('GET', '/', (res)=>{
 
   res.setHeader('Content-Type', 'application/json');
   res.statusCode = 200;
-  
-  res.end( stringFormat({message:"hi"}) );
+
+  res.end( stringFormat({msg:"hi"}) );
 
 });
 
-const server = http.createServer((req, res)=>{  
+const server = http.createServer( async (req, res)=>{  
+  const bod = (event) => {    
+    return new Promise((resolve) => {   
+      const str = null;
+      req.on(event, (tmp)=>{      
+        str = JSON.parse(Buffer.from(tmp).toString('utf8'));              
+      });
+      resolve(str);
+    });    
+  }
+
+  req.param = qs.parse(url.parse(req.url.toString()).query);
+  req.bod = await bod("data");
+
   router.lookup(req, res);
+
 });
 
 server.listen(7000);
