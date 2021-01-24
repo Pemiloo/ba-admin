@@ -18,18 +18,14 @@ router.on('POST', '/', async (req,res) => {
   const valid = ruleAdminSave(req.bod);
 
   if(valid){    
-
     const staIn = await mongo.save(req.bod,"email");
-  
     if(staIn){
       response.send(res, 200, 'Insert data success!');
     }
     else{
       response.send(res, 400, 'Insert data not success!');
     }
-
   }
-
   else {response.send(res, 400, 'Request not valid!');}
 
 });

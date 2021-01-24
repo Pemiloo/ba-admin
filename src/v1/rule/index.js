@@ -1,3 +1,5 @@
+'use strict'
+
 const json = require('fast-json-stringify');
 
 const ruleAdmin = json({
@@ -8,4 +10,4 @@ const ruleAdmin = json({
   namaPanitia : [String]
 });
 
-module.exports = {ruleAdmin};
+module.exports = { ruleAdmin };
