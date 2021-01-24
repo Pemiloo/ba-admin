@@ -13,11 +13,17 @@ const ruleFilter = JSON({
   }
 });
 
+const headers = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+  "Access-Control-Max-Age": 2592000
+};
+
 function send(res = new http.ServerResponse() , code = 200, msg="", data ="", etag=null){
   
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('etag', etag);
-  res.statusCode = 200;
+  res.writeHead(200, headers);
   
   const filter = {code, msg, data};
   
