@@ -40,7 +40,9 @@ Mongo.prototype.save = async function(data=null, keyField=""){
 
   const findGet = await this.client.findOne(ob);
 
-  if(findGet === null){
+  console.log(findGet);
+
+  if(findGet != null){
     return false;
   }
 
@@ -66,5 +68,33 @@ Mongo.prototype.save = async function(data=null, keyField=""){
 
   return false;
 }
+
+Mongo.prototype.get = async function(param={}, field={}, start=0, end=0, sort={}){
+  
+  let res = null;
+  
+  if(end === 0){
+    res = await this.client.find(param, {projection:field}).sort(sort).toArray();
+    return res;
+  }
+  
+  res = await this.client.find(param, {projection:field}).skip(start).limit(end).sort(sort).toArray();
+  
+  return res;
+}
+
+Mongo.prototype.setOne = async function(param = null, set = null){
+  if(param === null || set === null) return false;
+  await this.client.updateOne(param, {$set:set, $currentDate: {lastModified:true}});
+  return true;
+}
+
+Mongo.prototype.setMany = async function(param = null, set = null){
+  if(param === null || set === null) return false;
+  await this.client.updateMany(param, {$set:set, $currentDate: {lastModified:true}});
+  return true;
+}
+
+
 
 module.exports = Mongo;
