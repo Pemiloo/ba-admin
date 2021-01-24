@@ -4,36 +4,33 @@ const url = require('url');
 const http = require('http');
 const qs = require('querystring');
 const router = require('find-my-way')();
+
 const cache = require('./src/v1/lib/req');
-const JSON = require('fast-json-stringify');
 const response = require('./src/v1/lib/res');
 
 const Mongo = require('./src/v1/lib/mongo');
 const mongo = new Mongo('pemilo', 'admin', 'mongodb://127.0.0.1:27017/');
 
-const stringFormat = JSON({
-  type: 'object',
-  properties : {
-    msg : {type : 'string'}
-  }
-});
+const { ruleAdminSave } = require('./src/v1/validation');
 
-router.on('POST', '/', async (_, res) => {
+router.on('POST', '/', async (req,res) => {
 
-  const staIn = await mongo.save({
-    email:"rezaxxxx02@gmail.com",
-    password : "123",
-    linkPhoto : "https://hello.com",
-    title : "Pemiliihan Osis 2021",
-    namaPanitia : ["Reza", "Fadhli"]
-  }, "email");
+  const valid = ruleAdminSave(req.bod);
 
-  if(staIn){
-    response.send(res, 200, 'Insert data berhasil!');
+  if(valid){    
+
+    const staIn = await mongo.save(req.bod,"email");
+  
+    if(staIn){
+      response.send(res, 200, 'Insert data success!');
+    }
+    else{
+      response.send(res, 400, 'Insert data not success!');
+    }
+
   }
-  else{
-    response.send(res, 400, 'Insert data gagal!');
-  }
+
+  else {response.send(res, 400, 'Request not valid!');}
 
 });
 
@@ -49,18 +46,21 @@ router.on('GET', '/', async (req ,res)=>{
 
 const server = http.createServer( async (req, res)=>{  
 
-  const bod = (event) => {    
-    return new Promise((resolve) => {   
-      const str = null;
-      req.on(event, (tmp)=>{      
-        str = JSON.parse(Buffer.from(tmp).toString('utf8'));              
+  const bod = () => {    
+    return new Promise((resolve) => {       
+      let str = null;
+      req.on("data", (tmp)=>{              
+        str = JSON.parse(Buffer.from(tmp).toString('utf8'));                                      
       });
-      resolve(str);
+      req.on("end", () => {        
+        resolve(str);            
+      });
     });    
   }
 
   req.param = qs.parse(url.parse(req.url.toString()).query);
-  req.bod = await bod("data");
+
+  req.bod = await bod();
 
   await mongo.init();
 
