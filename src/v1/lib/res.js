@@ -1,3 +1,5 @@
+'use strict'
+
 const http = require('http');
 
 const JSON = require('fast-json-stringify');
