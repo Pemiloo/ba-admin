@@ -4,8 +4,9 @@ const url = require('url');
 const http = require('http');
 const qs = require('querystring');
 const router = require('find-my-way')();
-
+const cache = require('./src/v1/lib/req');
 const JSON = require('fast-json-stringify');
+const response = require('./src/v1/lib/res');
 
 const stringFormat = JSON({
   type: 'object',
@@ -14,13 +15,12 @@ const stringFormat = JSON({
   }
 });
 
-router.on('GET', '/', (res)=>{
-
-  res.setHeader('Content-Type', 'application/json');
-  res.statusCode = 200;
-
-  res.end( stringFormat({msg:"hi"}) );
-
+router.on('GET', '/', async (req ,res)=>{
+  const etag = await cache.cache(req, res);
+  //progress bla bla
+  if(etag != null){
+    response.send(res, 200, 'New message from server', stringFormat({msg:"hi"}), etag);
+  }
 });
 
 const server = http.createServer( async (req, res)=>{  
