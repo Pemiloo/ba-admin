@@ -22,7 +22,9 @@ const headers = {
 function send(res = new http.ServerResponse() , code = 200, msg="", data ="", etag=null){
   
   res.setHeader('Content-Type', 'application/json');
-  res.setHeader('etag', etag);
+  if(etag != null  || etag != undefined){
+    res.setHeader('etag', etag);
+  }
   res.writeHead(200, headers);
   
   const filter = {code, msg, data};

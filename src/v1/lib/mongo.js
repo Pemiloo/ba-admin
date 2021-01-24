@@ -47,7 +47,7 @@ Mongo.prototype.save = async function(data=null, keyField=""){
   if(typeof data === 'object'){            
 
     try{
-      await this.client.insertOne(data);
+      await this.client.insertOne(data);      
       return true;
     }
 
@@ -82,15 +82,59 @@ Mongo.prototype.get = async function(param={}, field={}, start=0, end=0, sort={}
 }
 
 Mongo.prototype.setOne = async function(param = null, set = null){
-  if(param === null || set === null) return false;
-  await this.client.updateOne(param, {$set:set, $currentDate: {lastModified:true}});
-  return true;
+  
+  if(param === null || set === null) return false;  
+  
+  try {
+    await this.client.updateOne(param, {$set:set, $currentDate: {lastModified:true}});    
+    return true;
+  }   
+  
+  catch{return false;}
+
 }
 
 Mongo.prototype.setMany = async function(param = null, set = null){
+  
   if(param === null || set === null) return false;
-  await this.client.updateMany(param, {$set:set, $currentDate: {lastModified:true}});
-  return true;
+  
+  try {
+    await this.client.updateMany(param, {$set:set, $currentDate: {lastModified:true}});
+    return true;
+  } 
+  
+  catch {return false;}
+
+}
+
+Mongo.prototype.delOne = async function(param = null){
+
+  if(param === null || param === undefined){
+    return false;
+  }
+
+  try {
+    await this.client.deleteOne(param);
+    return true;
+  }
+
+  catch {return false;}
+
+}
+
+Mongo.prototype.delMany = async function(param = null){
+
+  if(param === null || param === undefined){
+    return false;
+  }
+
+  try {
+    await this.client.deleteMany(param);
+    return true;
+  }
+
+  catch {return false;}
+
 }
 
 

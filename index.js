@@ -20,7 +20,7 @@ const stringFormat = JSON({
 
 router.on('POST', '/', async (_, res) => {
 
-  await mongo.save({
+  const staIn = await mongo.save({
     email:"rezaxxxx02@gmail.com",
     password : "123",
     linkPhoto : "https://hello.com",
@@ -28,8 +28,11 @@ router.on('POST', '/', async (_, res) => {
     namaPanitia : ["Reza", "Fadhli"]
   }, "email");
 
-  if(etag != null){
-    response.send(res, 200, 'New message from server', stringFormat({msg:"hi"}), etag);
+  if(staIn){
+    response.send(res, 200, 'Insert data berhasil!');
+  }
+  else{
+    response.send(res, 400, 'Insert data gagal!');
   }
 
 });
