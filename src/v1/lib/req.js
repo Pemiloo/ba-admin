@@ -21,7 +21,7 @@ async function cache(req = new http.IncomingMessage(), res = new http.ServerResp
 
     if(rdsta){
       //console.log("Masuk");
-      handleRes.send(res, 200, "Already cache bro!", null, etag);
+      handleRes.send(res, 304, "Already cache bro!", null, etag);
       return null;
     }
     else{

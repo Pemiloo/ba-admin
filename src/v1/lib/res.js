@@ -5,8 +5,9 @@ const JSON = require('fast-json-stringify');
 const ruleFilter = JSON({
   type:'object',
   properties:{
-    msg : {type:'string'},
-    data : {type:'string'}
+    code  : {type:'number'},
+    msg   : {type:'string'},
+    data  : {type:'string'}
   }
 });
 
@@ -14,9 +15,9 @@ function send(res = new http.ServerResponse() , code = 200, msg="", data ="", et
   
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('etag', etag);
-  res.statusCode = code;
+  res.statusCode = 200;
   
-  const filter = {msg, data};
+  const filter = {code, msg, data};
   
   res.end( ruleFilter(filter) );
 }
