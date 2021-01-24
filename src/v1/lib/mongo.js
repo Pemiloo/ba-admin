@@ -20,17 +20,17 @@ Mongo.prototype.getUrl = function(){
 }
 
 Mongo.prototype.init = async function(){
-  const con = await MongoClient.connect(this.url);
+  const con = await MongoClient.connect(this.url, {useNewUrlParser:true, useUnifiedTopology:true});
   this.client = await con.db(this.database).collection(this.collection);
 }
 
 Mongo.prototype.save = async function(data=null, keyField=""){
-  
-  if(this.client === null || this.client === undefined){
+
+  if(this.client === null || this.client === undefined){    
     return false;
   }
   
-  if(data === null || data === undefined){
+  if(data === null || data === undefined){    
     return false;    
   }
   
@@ -40,16 +40,14 @@ Mongo.prototype.save = async function(data=null, keyField=""){
 
   const findGet = await this.client.findOne(ob);
 
-  console.log(findGet);
-
   if(findGet != null){
     return false;
   }
 
-  if(typeof data === 'object'){    
-    
+  if(typeof data === 'object'){            
+
     try{
-      await client.insertOne(data);
+      await this.client.insertOne(data);
       return true;
     }
 
@@ -59,7 +57,7 @@ Mongo.prototype.save = async function(data=null, keyField=""){
   else if(Array.isArray(data)){    
     
     try {
-      await client.insertMany(data);
+      await this.client.insertMany(data);
       return true;    
     }
 
