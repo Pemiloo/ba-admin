@@ -3,8 +3,8 @@
 const joi = require('joi');
 
 function ruleEngine(rule = null, ob = {}){
-  const {_, err} = rule.validate(ob);
-  if(err === undefined || err === null) return true;
+  const {_, error} = rule.validate(ob);
+  if(error === undefined || error === null) return true;
   return false;
 }
 

@@ -12,7 +12,6 @@ const Mongo = require('./src/v1/lib/mongo');
 const mongo = new Mongo('pemilo','admin');
 
 (async()=>{
-  console.log("Kena init");
   await mongo.init();
 })();
 
