@@ -11,6 +11,11 @@ const ruleSignin = json({
   }
 });
 
+const ruleResponseSignin = json({
+  title: 'Response Signin',
+  type : 'array'
+});
+
 const ruleAdmin = json({
   title : 'RuleAdmin',
   type : 'object',
@@ -23,4 +28,4 @@ const ruleAdmin = json({
   }
 });
 
-module.exports = { ruleAdmin, ruleSignin };
+module.exports = { ruleAdmin, ruleSignin, ruleResponseSignin };

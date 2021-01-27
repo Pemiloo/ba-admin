@@ -17,15 +17,23 @@ const mongo = new Mongo('pemilo','admin');
 
 const { ruleAdminSignup, ruleAdminSignin } = require('./src/v1/validation');
 
-const { ruleSignin } = require('./src/v1/rule/index');
+const { ruleSignin, ruleResponseSignin } = require('./src/v1/rule/index');
 
 router.on('POST', '/v1/signup', async (req,res) => {
 
   const valid = ruleAdminSignup(req.bod);
 
   if(valid){        
+    
     const staIn = await mongo.save(req.bod,"email");
-    (staIn) ?  response.send(res, 200, 'Insert data success!') : response.send(res, 400, 'Insert data not success!');    
+
+    if(staIn){
+      response.send(res, 200, 'Insert data success!');
+    }
+    else{
+      response.send(res, 400, 'Insert data not success!');
+    }
+
   }
 
   else {response.send(res, 400, 'Request not valid!');}
@@ -39,15 +47,21 @@ router.on('GET', '/v1/signin', async (req ,res)=>{
   if(valid){    
 
     const bod = ruleSignin(req.bod);
-
     const etag = await cache.cache(req, res, bod);  
+    
+    const dat = await mongo.get(req.bod, {email:1});
 
-    if(etag != null){
-      response.send(res, 200, 'New message from server', "hi", etag);
+    const convertData = ruleResponseSignin(dat);
+
+    if(dat.length === 0) {
+      response.send(res, 204, 'Request berhasil namun data tidak ditemukan!', convertData, etag);          
+    }
+    else{
+      response.send(res, 200, 'Request berhasil dan data ditemukan!', convertData, etag);          
     }
 
   }
-  
+
   else response.send(res, 400, 'Request not valid');
 
 });
