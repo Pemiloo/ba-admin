@@ -24,6 +24,7 @@ Mongo.prototype.getUrl = function(){
 Mongo.prototype.init = async function(){
   const con = await MongoClient.connect(this.url, {useNewUrlParser:true, useUnifiedTopology:true});
   this.client = await con.db(this.database).collection(this.collection);
+
 }
 
 Mongo.prototype.save = async function(data=null, keyField=""){

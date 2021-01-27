@@ -2,12 +2,25 @@
 
 const json = require('fast-json-stringify');
 
-const ruleAdmin = json({
-  email : String,
-  password : String,
-  linkPhoto : String,
-  title : String,
-  namaPanitia : [String]
+const ruleSignin = json({
+  title : 'RuleSignin',
+  type: 'object',
+  properties : {
+    email : {type : 'string'},
+    password : {type : 'string'}
+  }
 });
 
-module.exports = { ruleAdmin };
+const ruleAdmin = json({
+  title : 'RuleAdmin',
+  type : 'object',
+  properties : {
+    email : {type : 'string'},
+    password : {type : 'string'},
+    linkPhoto : {type :'string'},
+    title : {type : 'string'},
+    namaPanitia : {type : 'array'}
+  }
+});
+
+module.exports = { ruleAdmin, ruleSignin };

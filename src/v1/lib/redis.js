@@ -20,12 +20,12 @@ async function del(key=""){
   return res;
 }
 
-async function check(key=""){
+async function check(key="", data=null){
   const res = await getAs(key);
-  if(res === null){
-    return false;
+  if(res != null && res === data){
+    return true;
   }
-  return true;
+  return false;
 }
 
 async function get(key=""){

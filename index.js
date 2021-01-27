@@ -9,34 +9,47 @@ const cache = require('./src/v1/lib/req');
 const response = require('./src/v1/lib/res');
 
 const Mongo = require('./src/v1/lib/mongo');
-const mongo = new Mongo('pemilo', 'admin', 'mongodb://127.0.0.1:27017/');
+const mongo = new Mongo('pemilo','admin');
 
-const { ruleAdminSave } = require('./src/v1/validation');
+(async()=>{
+  console.log("Kena init");
+  await mongo.init();
+})();
 
-router.on('POST', '/', async (req,res) => {
+const { ruleAdminSignup, ruleAdminSignin } = require('./src/v1/validation');
 
-  const valid = ruleAdminSave(req.bod);
+const { ruleSignin } = require('./src/v1/rule/index');
 
-  if(valid){    
+router.on('POST', '/v1/signup', async (req,res) => {
+
+  const valid = ruleAdminSignup(req.bod);
+
+  if(valid){        
     const staIn = await mongo.save(req.bod,"email");
-    if(staIn){
-      response.send(res, 200, 'Insert data success!');
-    }
-    else{
-      response.send(res, 400, 'Insert data not success!');
-    }
+    (staIn) ?  response.send(res, 200, 'Insert data success!') : response.send(res, 400, 'Insert data not success!');    
   }
+
   else {response.send(res, 400, 'Request not valid!');}
 
 });
 
-router.on('GET', '/', async (req ,res)=>{
+router.on('GET', '/v1/signin', async (req ,res)=>{                                                                                                                                                                                                                                                                                                                                                                                                                                
   
-  const etag = await cache.cache(req, res);
+  const valid = ruleAdminSignin(req.bod);
 
-  if(etag != null){
-    response.send(res, 200, 'New message from server', stringFormat({msg:"hi"}), etag);
+  if(valid){    
+
+    const bod = ruleSignin(req.bod);
+
+    const etag = await cache.cache(req, res, bod);  
+
+    if(etag != null){
+      response.send(res, 200, 'New message from server', "hi", etag);
+    }
+
   }
+  
+  else response.send(res, 400, 'Request not valid');
 
 });
 
@@ -55,10 +68,7 @@ const server = http.createServer( async (req, res)=>{
   }
 
   req.param = qs.parse(url.parse(req.url.toString()).query);
-
-  req.bod = await bod();
-
-  await mongo.init();
+  req.bod = await bod();  
 
   router.lookup(req, res);
 
