@@ -20,6 +20,11 @@ async function Signin(req = new http.IncomingMessage, res = new http.ServerRespo
   if(valid){
 
     const etag = await request.cache(req, res, ruler.ruleSignin(req.bod));
+
+    if(etag === null){
+      return null;
+    }
+
     const result = await mongo.get(req.bod, {email : 1});
 
     const convert = ruler.ruleResponseSignin(result);
@@ -28,11 +33,11 @@ async function Signin(req = new http.IncomingMessage, res = new http.ServerRespo
       response.send(res, 204, 'Request berhasil namun data tidak ditemukan!', convert, etag);          
     }
     
-    else response.send(res, 200, 'Request berhasil dan data ditemukan!', convert, etag);          
+    else {response.send(res, 200, 'Request berhasil dan data ditemukan!', convert, etag);          }
 
   }
 
-  else response.send(res, 400, 'Request not valid');
+  else {response.send(res, 400, 'Request not valid');}
 
 }
 

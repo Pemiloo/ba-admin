@@ -8,14 +8,14 @@ const response = require('../lib/res');
 const Mongo = require('../lib/mongo');
 const mongo = new Mongo('pemilo', 'admin');
 
-const ruler = require('../rule/index');
+//const ruler = require('../rule/index');
 const validator = require('../validation/index');
 
 ( async ()=>{ await mongo.init(); })();
 
-async function Signup(req = new http.IncomingMessage, req = new http.ServerResponse){
+async function Signup(req = new http.IncomingMessage, res = new http.ServerResponse){
 
-  const valid = validator.ruleAdminSignup();
+  const valid = validator.ruleAdminSignup(req.bod);
 
   if(valid){
     

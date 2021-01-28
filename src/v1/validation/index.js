@@ -22,6 +22,23 @@ function ruleAdminSignup(ob = {}){
 
 }
 
+function ruleUpdateProfile(ob = {}){
+
+  const rule = joi.object().keys({    
+    email : joi.string().email().required(),    
+    set : joi.object().keys({
+      email : joi.string().email().optional(), 
+      password : joi.string().optional(), 
+      linkPhoto : joi.string().optional(), 
+      title : joi.string().optional() ,
+      namaPanitia : joi.array().optional() 
+    }).required()
+  });
+
+  return ruleEngine(rule, ob);
+
+}
+
 function ruleAdminSignin(ob = {}){
   
   const rule = joi.object().keys({
@@ -33,4 +50,4 @@ function ruleAdminSignin(ob = {}){
 
 }
 
-module.exports = { ruleAdminSignup, ruleAdminSignin };
+module.exports = { ruleAdminSignup, ruleAdminSignin, ruleUpdateProfile };
